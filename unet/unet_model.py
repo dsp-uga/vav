@@ -7,8 +7,18 @@ from keras import backend as K
 We use the same unet model which was created by our team member Vyom Shrivastava during project 3 with Team Canady.
 This model was based on the paper: https://arxiv.org/pdf/1707.06314.pdf
 '''
+def dice_coef(y_true, y_pred):
+    y_true_f = K.flatten(y_true)
+    y_pred_f = K.flatten(y_pred)
+    intersection = K.sum(y_true_f * y_pred_f)
+    return (2. * intersection + smooth) / (K.sum(y_true_f) + K.sum(y_pred_f) + smooth)
+
+
+def dice_coef_loss(y_true, y_pred):
+    return -dice_coef(y_true, y_pred)
+
 def unet():
-    inputs = Input((256, 256, 1))
+    inputs = Input((256, 256, 3))
     conv1 = Conv2D(64, (3, 3), activation='relu', padding='same')(inputs)
     b1 = BatchNormalization()(conv1)
     conv1 = Conv2D(64, (3, 3), activation='relu', padding='same')(b1)
@@ -73,10 +83,11 @@ def unet():
     conv9 = Conv2D(64, (3, 3), activation='relu', padding='same')(b9)
     b9 = BatchNormalization()(conv9)
 
-    conv10 = Conv2D(1, (1, 1), activation='sigmoid')(b9)
+    conv10 = Conv2D(3, (1, 1), activation='sigmoid')(b9)
 
     model = Model(inputs=[inputs], outputs=[conv10])
 
-    model.compile(optimizer=Adam(lr=1e-4), loss='binary_crossentropy', metrics=['accuracy'])
+    model.compile(optimizer=Adam(lr=1e-4), loss=dice_coef_loss, metrics=[dice_coef])
+
 
     return model
