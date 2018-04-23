@@ -24,28 +24,29 @@ args = parser.parse_args()
 
 def augment_data(image_path,mask_path,mode):
     '''
-    loads images and mask as a numpy array, reshapes images and mask to 4 channels
-    and normalzes image data
-    
+    loads images and mask as a numpy array
+
     Args:
         image_path:the path of the npy array containing images
                    type: String
         mask_path:      the path to npy array containing masks
                    type: String
     Return:
-        numpy array of augmented mask and image
+        numpy array of mask and image
     '''
-    image_array = np.load(image_path)    
-    data_images = image_array - np.mean(image_array)
-    data_images = data_images / np.std(image_array)
+    data_images = np.load(image_path)
+    data_images = data_images.astype('float32')
+    data_images = data_images / 255
     
     if(mode=="fit"):
         mask_images = np.load(mask_path)
+        mask_images = mask_images.astype('float32')
+        mask_images = mask_images/255
         return data_images, mask_images
     else:
         return data_images
 
-#Augmenting data
+#Reading data
 if(args.mode=="fit"):
     images,mask = augment_data(args.image_path,args.mask_path,args.mode)
 if(args.mode=="predict"):
@@ -54,8 +55,8 @@ if(args.mode=="predict"):
 def fit(training_images,mask_images,save_path):
     model = unet()
     #Fitting and saving model
-    model.fit(training_images, mask_images, batch_size=8, epochs=10, verbose=1, shuffle=True)
-    model.save(save_path+"/"+"model.h5")
+    model.fit(training_images, mask_images, batch_size=4, epochs=10, verbose=1, shuffle=True)
+    model.save(save_path)
 
 def predict(testing_images,model_path,save_result_path):
     #loading model and predicting mask
