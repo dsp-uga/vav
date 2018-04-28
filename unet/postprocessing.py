@@ -10,6 +10,10 @@ is referred from the Data Science Bowl 2018 Kaggle Challenge open kernels.
 The kernel referred is: https://www.kaggle.com/keegil/keras-u-net-starter-lb-0-277?scriptVersionId=2164855 
 """
 def rle_encoding(x):
+    '''
+    Creates a Run Length Encoding for given image
+    
+    '''
     dots = np.where(x.T.flatten() == 1)[0]
     run_lengths = []
     prev = -2
@@ -25,6 +29,11 @@ def prob_to_rles(x, cutoff=0.2):
         yield rle_encoding(lab_img == i)
 
 def postprocess(image_path,save_path):
+    '''
+    Takes in the predicted images. Applies Run Length Encoding and then creates a submission file
+    @param image_path - location of predicted image paths
+    @param save_path - output path for images after post processing is applied
+    '''
 
     #Reading predicted data and image size information
     sizes_test = np.load(image_path+"/img_size.npy")
