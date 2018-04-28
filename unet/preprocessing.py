@@ -4,7 +4,13 @@ import cv2
 from preprocessing_methods import readImage,resizeImage,lowPassThreshold,medianFiltering,getCombinedMask
 
 def preprocess(mode,path,save_path):
-
+    '''
+    Takes in images as per the mod and applies the desired filtering on the images and 
+    then saves the filtered images on the desired path
+    @param mode - decides whether we are dealing with training data or testing data
+    @param save_path - output path of filtered images
+    @param path - input path of images
+    '''
     images = []
     size=[]
     masks = []
