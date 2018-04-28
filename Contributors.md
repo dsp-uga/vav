@@ -14,5 +14,7 @@ Vibodh
 
 Ankita
 
-1) Wiki & ReadMe
-2) Worked on Unet implementation
+1) Worked on Unet implementation
+2) Wiki & ReadMe
+3) Project Report
+
