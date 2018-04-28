@@ -98,7 +98,7 @@ See also the list of [contributors](https://github.com/dsp-uga/vav/blob/master/C
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/dsp-uga/vav/blob/master/LICENSE) file for details
 
 ## Acknowledgments and References
 
